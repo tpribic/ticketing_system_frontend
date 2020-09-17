@@ -6,7 +6,7 @@ export default function Test() {
 
 
     async function fetchData() {
-        const res = await fetch("http://127.0.0.1:8000/");
+        const res = await fetch(process.env.REACT_APP_API_URL + "test");
         res
             .json()
             .then(res => setTesting(res.message))
@@ -17,8 +17,12 @@ export default function Test() {
     });
 
     return (
-        <div>
-            Message from backend is: {testing}
-        </div>
+        <>
+            {console.log(process.env.REACT_APP_API_URL)}
+            <div>
+                Message from backend is: {testing}
+            </div>
+        </>
+
     )
 }
