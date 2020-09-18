@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, FormGroup, FormControl, ControlLabel, HelpBlock, ButtonToolbar } from 'rsuite';
 import AuthService from "../../Services/AuthService";
+import { useHistory } from 'react-router-dom';
 
 const Login = (props) => {
 
@@ -8,6 +9,7 @@ const Login = (props) => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const history = useHistory();
 
     const onChangeUsername = (e) => {
         setUsername(e);
@@ -24,7 +26,7 @@ const Login = (props) => {
         AuthService.login(username, password).then(
             () => {
                 setLoading(false);
-                props.history.push("/profile");
+                history.push("/profile");
                 window.location.reload();
             },
             (error) => {
@@ -44,7 +46,7 @@ const Login = (props) => {
 
     return (
         <>
-            <Form>
+            <Form fluid>
                 <FormGroup>
                     <ControlLabel>Email</ControlLabel>
                     <FormControl name="email" type="email" onChange={onChangeUsername} />

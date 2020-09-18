@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRef } from "react";
-import { Form, Button, FormGroup, HelpBlock, ButtonToolbar, Schema } from 'rsuite';
+import { Form, Button, FormGroup, ButtonToolbar, Schema } from 'rsuite';
 import AuthService from "../../Services/AuthService";
 import { TextField } from "./TextField";
 
@@ -80,6 +80,7 @@ const Register = (props) => {
                 }}
                 checkTrigger='none'
                 ref={form}
+                fluid
             >
                 <TextField name="name" label="Name" type="text" onChange={value => setFormValue({ ...formValue, name: value })} />
                 <TextField name="surname" label="Surname" type="text" onChange={value => setFormValue({ ...formValue, surname: value })} />
