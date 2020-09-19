@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Form, Button, FormGroup, ButtonToolbar, Schema } from 'rsuite';
 import AuthService from "../../Services/AuthService";
+import { useHistory } from 'react-router-dom';
 import { TextField } from "./TextField";
 
 
@@ -18,8 +18,8 @@ const Register = (props) => {
         repeatedPassword: ''
     });
     const [formError, setFormError] = useState({});
-
     const form = useRef(null);
+    const history = useHistory();
 
 
     const { StringType, NumberType } = Schema.Types;
@@ -53,7 +53,7 @@ const Register = (props) => {
         AuthService.register(formValue.name, formValue.surname, formValue.email, formValue.password).then(
             () => {
                 setLoading(false);
-                props.history.push("/login");
+                history.push("/login");
                 window.location.reload();
             },
             (error) => {
@@ -85,8 +85,8 @@ const Register = (props) => {
                 <TextField name="name" label="Name" type="text" onChange={value => setFormValue({ ...formValue, name: value })} />
                 <TextField name="surname" label="Surname" type="text" onChange={value => setFormValue({ ...formValue, surname: value })} />
                 <TextField name="email" label="Email" type="text" onChange={value => setFormValue({ ...formValue, email: value })} />
-                <TextField name="password" label="Password" type="text" onChange={value => setFormValue({ ...formValue, password: value })} />
-                <TextField name="repeatedPassword" label="Repeat Password" type="text" onChange={value => setFormValue({ ...formValue, repeatedPassword: value })} />
+                <TextField name="password" label="Password" type="password" onChange={value => setFormValue({ ...formValue, password: value })} />
+                <TextField name="repeatedPassword" label="Repeat Password" type="password" onChange={value => setFormValue({ ...formValue, repeatedPassword: value })} />
 
                 <FormGroup>
                     <ButtonToolbar>
@@ -96,7 +96,6 @@ const Register = (props) => {
                 <FormGroup>
                     {message}
                 </FormGroup>
-
             </Form >
         </>
     );
