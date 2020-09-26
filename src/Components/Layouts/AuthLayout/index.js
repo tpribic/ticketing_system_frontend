@@ -1,11 +1,13 @@
 import React from "react";
 import { Container, Content, FlexboxGrid, Footer, Header, Panel } from "rsuite";
 import { useHistory } from "react-router-dom";
+import useWindowDimensions from "../../../Hooks/windowDimensionHook";
 import Register from "../../RegisterForm";
 import Login from "../../LoginForm";
 
 export default function AuthLayout(props) {
   const history = useHistory();
+  const { height, width } = useWindowDimensions();
   return (
     <Container style={{ height: "calc(100vh - 56px)" }}>
       <FlexboxGrid
@@ -13,7 +15,10 @@ export default function AuthLayout(props) {
         justify="center"
         align="middle"
       >
-        <FlexboxGrid.Item colspan={8}>
+        <FlexboxGrid.Item
+          style={width > 767 ? {minWidth: 450} : {minWidth: 300}}
+          colspan={8}
+        >
           <Content style={{ padding: "10px 30px" }}>
             <Panel
               header={
@@ -34,7 +39,6 @@ export default function AuthLayout(props) {
           </Content>
         </FlexboxGrid.Item>
       </FlexboxGrid>
-      <Footer style={{ height: 50, textAlign: "center" }}>by Tpribic</Footer>
     </Container>
   );
 }

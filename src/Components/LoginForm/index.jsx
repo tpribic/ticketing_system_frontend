@@ -26,7 +26,7 @@ const Login = (props) => {
         AuthService.login(username, password).then(
             () => {
                 setLoading(false);
-                history.push("/profile");
+                history.push("/dashboard");
                 window.location.reload();
             },
             (error) => {

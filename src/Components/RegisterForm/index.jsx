@@ -30,10 +30,8 @@ const Register = (props) => {
         password: StringType().minLength(5, 'Password too short').maxLength(255).isRequired('Password is required.'),
         repeatedPassword: StringType()
             .addRule((value, data) => {
-                console.log(value, data);
 
                 if (value !== data.password) {
-                    console.log(value, registrationModel.password)
                     return false;
                 }
 
@@ -50,25 +48,18 @@ const Register = (props) => {
             return console.log('Whoops! Form was submitted invalid!');
         }
 
-        AuthService.register(formValue.name, formValue.surname, formValue.email, formValue.password).then(
-            () => {
+        AuthService.register(formValue.name, formValue.surname, formValue.email, formValue.password)
+            .then(
+                () => {
+                    setLoading(false);
+                    history.push("/login");
+                    window.location.reload();
+                }
+            ).catch((error) => {
                 setLoading(false);
-                history.push("/login");
-                window.location.reload();
-            },
-            (error) => {
-                const resMessage =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
-
-                console.log(error)
-                setLoading(false);
-                setMessage(resMessage);
+                setMessage(error.response.data);
             }
-        );
+            );
     };
 
     return (

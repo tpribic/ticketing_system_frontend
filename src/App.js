@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "rsuite/dist/styles/rsuite-default.css";
 
-import NavBarInstance from "./Components/Navbar";
+import NavigationInstance from "./Components/Navigation";
 import MainRoutes from "./MainRoutes";
 
 const App = () => {
@@ -9,7 +9,7 @@ const App = () => {
 
   return (
     <>
-      <NavBarInstance
+      <NavigationInstance
         appearance="inverse"
         activeKey={activeKey}
         onSelect={(e) => setActiveKey(e)}
