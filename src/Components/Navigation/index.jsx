@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Navbar, Nav, Dropdown, Icon, Container, Sidenav, IconButton, Drawer, ButtonToolbar, Button, Sidebar, Header, Content } from 'rsuite';
+import { Navbar, Nav, Dropdown, Icon, Container, Sidenav, IconButton, Drawer, ButtonToolbar, Button, Sidebar, Header, Content, Divider } from 'rsuite';
 import AuthService from '../../Services/AuthService';
-import { Link, Route, Switch, useHistory } from "react-router-dom";
+import { Link, Redirect, Route, Switch, useHistory } from "react-router-dom";
 import useWindowDimensions from '../../Hooks/windowDimensionHook';
 import jwt_decode from 'jwt-decode';
-import Test from "../../test";
-
+import ProductsContent from '../ProductsContent'
+import AddUserForm from "../AddUserForm";
+import ProductIssues from "../ProductIssues"
 
 const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
 
-    const [showModeratorBoard, setShowModeratorBoard] = useState(false);
-    const [showAdminBoard, setShowAdminBoard] = useState(false);
+    const [showEmployeeActions, setShowEmployeeActions] = useState(false);
+    const [showAdminActions, setShowAdminActions] = useState(false);
     const [currentUser, setCurrentUser] = useState(undefined);
     const [username, setUsername] = useState(undefined);
     const [toggleSideNav, setToggleSideNav] = useState(false);
@@ -21,9 +22,10 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
     useEffect(() => {
         const user = AuthService.getCurrentUser();
         if (user) {
+            const decodedUser = jwt_decode(user.token);
             setCurrentUser(user);
-            // setShowEmployeeBoard(user.roles.includes("ROLE_EMPLOYEE"));
-            // setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+            setShowEmployeeActions(decodedUser.roles.includes("ROLE_EMPLOYEE"));
+            setShowAdminActions(decodedUser.roles.includes("ROLE_ADMIN"));
         }
     }, []);
 
@@ -37,7 +39,7 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
     const logOut = () => {
         AuthService.logout();
         setCurrentUser(undefined);
-        history.push("/login");
+        history.push('/login')
     };
 
     return (
@@ -55,7 +57,6 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
                                 </Dropdown>
                             }
                         </Nav>
-
                         <Nav>
                             {
                                 width < 768 && currentUser ?
@@ -73,15 +74,23 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
                         <Sidenav onSelect={onSelect} activeKey={activeKey} style={{ width: 250, height: 'calc(100vh - 56px)' }}>
                             <Sidenav.Body>
                                 <Nav>
-                                    <Nav.Item eventKey="1" componentClass={Link} to="/" icon={<Icon icon="dashboard" />}>
+                                    <Nav.Item eventKey="1" componentClass={Link} to="/dashboard" icon={<Icon icon="dashboard" />}>
                                         Dashboard
                                 </Nav.Item>
-                                    <Nav.Item eventKey="2" componentClass={Link} to="/dashboard/tickets" icon={<Icon icon="ticket" />}>
-                                        Tickets
-                                </Nav.Item>
-                                    <Nav.Item eventKey="3" componentClass={Link} to="/dashboard/products" icon={<Icon icon="cubes" />}>
+                                    <Nav.Item eventKey="2" componentClass={Link} to="/dashboard/products" icon={<Icon icon="cubes" />}>
                                         Products
                                 </Nav.Item>
+                                    <Nav.Item eventKey="3" componentClass={Link} to="/dashboard/issues" icon={<Icon icon="ticket" />}>
+                                        Issues
+                                </Nav.Item>
+                                    <Divider />
+                                    {showAdminActions ?
+                                        <Nav.Item eventKey="4" componentClass={Link} to="/dashboard/admin/add" icon={<Icon icon="user-plus" />}>
+                                            Add new Employee
+                                            </Nav.Item>
+                                        :
+                                        null
+                                    }
                                 </Nav>
                             </Sidenav.Body>
                         </Sidenav>
@@ -99,26 +108,39 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
                             </Drawer.Header>
                             <Drawer.Body >
                                 <Nav vertical onSelect={onSelect} activeKey={activeKey} appearance='subtle'>
-                                    <Nav.Item eventKey="1" componentClass={Link} to="/" icon={<Icon icon="dashboard" />}>
+                                    <Nav.Item eventKey="1" componentClass={Link} to="/dashboard" icon={<Icon icon="dashboard" />}>
                                         Dashboard
                                 </Nav.Item>
-                                    <Nav.Item eventKey="2" componentClass={Link} to="/dashboard/tickets" icon={<Icon icon="ticket" />}>
-                                        Tickets
-                                </Nav.Item>
-                                    <Nav.Item eventKey="3" componentClass={Link} to="/dashboard/products" icon={<Icon icon="cubes" />}>
+                                    <Nav.Item eventKey="2" componentClass={Link} to="/dashboard/products" icon={<Icon icon="cubes" />}>
                                         Products
                                 </Nav.Item>
+                                    <Nav.Item eventKey="3" componentClass={Link} to="/dashboard/Issues" icon={<Icon icon="ticket" />}>
+                                        Issues
+                                </Nav.Item>
+                                    <Divider />
+
+                                    {showAdminActions ?
+                                        <Nav.Item eventKey="4" componentClass={Link} to="/dashboard/admin/add" icon={<Icon icon="user-plus" />}>
+                                            Add new Employee
+                                            </Nav.Item>
+                                        :
+                                        null
+                                    }
                                 </Nav>
                             </Drawer.Body>
                         </Drawer>
                     </Container>
                 }
                 <Container>
-                    <Content>
+                    <Content style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
                         <Switch>
-                            <Route exact path="/dashboard" component={Test} />
-                            <Route exact path="/dashboard/tickets" component={function hue() { return (<p>Hue hue tickets</p>) }} />
+                            <Route exact path="/dashboard" component={ProductsContent} />
                             <Route exact path="/dashboard/products" component={function hue() { return (<p>Hue hue products</p>) }} />
+                            <Route exact path="/dashboard/issues" component={function hue() { return (<p>Hue hue issues</p>) }} />
+                            <Route exact path="/dashboard/product/:slug/issues" component={ProductIssues} />
+                            <Route exact path="/dashboard/admin/" component={function hue() { return <p>hej hej admine</p> }} />
+                            <Route exact path="/dashboard/admin/add" component={AddUserForm} />
+                            <Route component={function hue() { return <p>You really shouldn't try to mess with the URL...</p> }} />
                         </Switch>
                     </Content>
                 </Container>

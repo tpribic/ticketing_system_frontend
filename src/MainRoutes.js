@@ -18,15 +18,9 @@ const MainRoutes = () => {
 
   return (
     <Switch>
-      <Route path="/login" component={AuthLayout}>
-        {user !== undefined ? <Redirect to="/dashboard" /> : null}
-      </Route>
-      <Route path="/register" component={AuthLayout}>
-        {user !== undefined ? <Redirect to="/dashboard" /> : null}
-      </Route>
-      <Route exact path="/" component={DashboardLayout}>
-        <Redirect to="/dashboard" />
-      </Route>
+      <Route exact path="/" component={AuthLayout} />
+      <Route exact path="/login" component={AuthLayout} />
+      <Route exact path="/register" component={AuthLayout} />
       <Route path="/dashboard" component={DashboardLayout} />
       <Route
         component={function notFound() {

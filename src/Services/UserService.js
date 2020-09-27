@@ -6,15 +6,15 @@ const getPublicContent = () => {
 };
 
 const getUserBoard = () => {
-  return axios.get(process.env.REACT_APP_API_URL + "user", { headers: authHeader() });
+  return axios.get(process.env.REACT_APP_API_URL + "dashboard/user", { headers: authHeader() });
 };
 
 const getModeratorBoard = () => {
-  return axios.get(process.env.REACT_APP_API_URL + "mod", { headers: authHeader() });
+  return axios.get(process.env.REACT_APP_API_URL + "dashboard/employee", { headers: authHeader() });
 };
 
 const getAdminBoard = () => {
-  return axios.get(process.env.REACT_APP_API_URL + "admin", { headers: authHeader() });
+  return axios.get(process.env.REACT_APP_API_URL + "dashboard/admin", { headers: authHeader() });
 };
 
 export default {
