@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, FormGroup, FormControl, ControlLabel, HelpBlock, ButtonToolbar } from 'rsuite';
 import AuthService from "../../Services/AuthService";
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 const Login = (props) => {
 
@@ -64,6 +64,8 @@ const Login = (props) => {
                 <FormGroup>
                     {message}
                 </FormGroup>
+                <p>Don't have an account?</p>
+                <Link to="/register">Register here</Link>
             </Form>
         </>
     );

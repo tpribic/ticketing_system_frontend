@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, FormGroup, ButtonToolbar, Schema } from 'rsuite';
 import AuthService from "../../Services/AuthService";
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { TextField } from "./TextField";
 
 
@@ -87,6 +87,7 @@ const Register = (props) => {
                 <FormGroup>
                     {message}
                 </FormGroup>
+                <Link to="/login">I have already registered</Link>
             </Form >
         </>
     );

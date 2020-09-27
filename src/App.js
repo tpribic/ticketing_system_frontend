@@ -5,18 +5,7 @@ import NavigationInstance from "./Components/Navigation";
 import MainRoutes from "./MainRoutes";
 
 const App = () => {
-  const [activeKey, setActiveKey] = useState(null);
-
-  return (
-    <>
-      <NavigationInstance
-        appearance="inverse"
-        activeKey={activeKey}
-        onSelect={(e) => setActiveKey(e)}
-      />
-      <MainRoutes />
-    </>
-  );
+  return <MainRoutes />;
 };
 
 export default App;

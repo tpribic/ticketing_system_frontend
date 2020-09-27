@@ -1,15 +1,18 @@
-import React from "react";
-import { Container, Content, FlexboxGrid, Footer, Header, Panel } from "rsuite";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import useWindowDimensions from "../../../Hooks/windowDimensionHook";
-import { Sidenav, Nav, Icon, Dropdown } from "rsuite";
+import NavigationInstance from "../../Navigation/index";
 
 export default function DashboardLayout(props) {
-  const history = useHistory();
+  // const history = useHistory();
   const { height, width } = useWindowDimensions();
-  return (
-    <>
+  const [activeKey, setActiveKey] = useState(null);
 
-    </>
+  return (
+    <NavigationInstance
+      appearance="inverse"
+      activeKey={activeKey}
+      onSelect={(e) => setActiveKey(e)}
+    />
   );
 }
