@@ -7,6 +7,7 @@ import jwt_decode from 'jwt-decode';
 import ProductsContent from '../ProductsContent'
 import AddUserForm from "../AddUserForm";
 import ProductIssues from "../ProductIssues"
+import Issue from "../Issue";
 
 const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
 
@@ -134,12 +135,14 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
                 <Container>
                     <Content style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
                         <Switch>
+                        {/* function hue(props) { return <p>hej hej issue {props.match.params.slug}</p> } */}
                             <Route exact path="/dashboard" component={ProductsContent} />
                             <Route exact path="/dashboard/products" component={function hue() { return (<p>Hue hue products</p>) }} />
                             <Route exact path="/dashboard/issues" component={function hue() { return (<p>Hue hue issues</p>) }} />
                             <Route exact path="/dashboard/product/:slug/issues" component={ProductIssues} />
                             <Route exact path="/dashboard/admin/" component={function hue() { return <p>hej hej admine</p> }} />
                             <Route exact path="/dashboard/admin/add" component={AddUserForm} />
+                            <Route exact path="/dashboard/issue/:slug" component={Issue} />
                             <Route component={function hue() { return <p>You really shouldn't try to mess with the URL...</p> }} />
                         </Switch>
                     </Content>

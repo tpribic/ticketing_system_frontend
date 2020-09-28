@@ -60,6 +60,10 @@ export default function ProductIssues(props) {
                         console.log(data);
                     }}
                 >
+                    <Column width={70} fixed>
+                        <HeaderCell>Id</HeaderCell>
+                        <Cell dataKey="id" />
+                    </Column>
                     <Column width={70} align="center" fixed>
                         <HeaderCell>Priority</HeaderCell>
                         <Cell>
