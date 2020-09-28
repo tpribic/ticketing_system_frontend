@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Button, Icon } from 'rsuite';
+import { Button, Icon, Loader } from 'rsuite';
 import authHeader from '../../Services/AuthHeader'
 import { Table } from 'rsuite'
 import { useHistory } from 'react-router-dom'
@@ -43,8 +43,15 @@ export default function ProductsContent(props) {
     }, [])
 
     return (
-        <div style={{width: '100%'}}>
+        <div style={{ width: '100%' }}>
             <Button
+                onClick={() => history.push('/dashboard/product/register')}
+                appearance="primary"
+                style={{ margin: 20 }}>
+                Register product <Icon icon="plus-square" style={{ marginLeft: 3 }} />
+            </Button>
+            <Button
+                onClick={() => history.push('/dashboard/product/new')}
                 appearance="primary"
                 style={{ margin: 20 }}>
                 Add new product <Icon icon="plus-square" style={{ marginLeft: 3 }} />
@@ -103,14 +110,14 @@ export default function ProductsContent(props) {
                                 function showIssues() {
                                     history.push(`/dashboard/product/${rowData.id}/issues`);
                                 }
-                                function createNewIssue() {
-                                    history.push(`/dashboard/product/${rowData.id}/new`)
-                                }
+                                // function createNewIssue() {
+                                //     history.push(`/dashboard/product/${rowData.id}/new`)
+                                // }
                                 return (
                                     <span>
-                                        <a onClick={showIssues}> Issues </a>
-                                        |{' '}
-                                        <a onClick={createNewIssue}> New Issue </a>
+                                        <a onClick={showIssues}> Open issues </a>
+                                        {/* |{' '}
+                                        <a onClick={createNewIssue}> New Issue </a> */}
                                     </span>
                                 );
                             }}
@@ -118,7 +125,7 @@ export default function ProductsContent(props) {
                     </Column>
                 </Table>
                 :
-                <p>Please wait</p>
+                <Loader />
             }
         </div>
     )
