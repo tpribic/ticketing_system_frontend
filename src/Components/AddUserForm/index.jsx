@@ -54,7 +54,7 @@ const AddUserForm = (props) => {
     };
 
     return (
-        <Panel bordered style={width > 767 ? { width: 600, height: 520, marginTop: 30 } : { minWidth: 300, maxHeight: 500, marginTop: 15 }}>
+        <Panel bordered style={width > 767 ? { width: 600, maxHeight: 600, marginTop: 30 } : { minWidth: 300, maxHeight: 600, marginTop: 15 }}>
             <h2>Add new user</h2>
             <Form
                 model={registrationModel}

@@ -34,7 +34,7 @@ export default function IssueDetails(props) {
     const history = useHistory();
     const [issue, setIssue] = useState(undefined);
     const [comments, setComments] = useState(undefined);
-    const [comment, setComment] = useState(null);
+    const [comment, setComment] = useState("");
     const [formError, setFormError] = useState({});
     const form = useRef(null);
 
@@ -59,6 +59,7 @@ export default function IssueDetails(props) {
             return console.log('Whoops! Form was submitted invalid!');
         }
         const commentData = await Axios.post(process.env.REACT_APP_API_URL + `api/comment/${props.match.params.slug}`, { content: comment }, { headers: authHeader() });
+        setComment("");
         getIssueData();
     }
 
@@ -142,7 +143,7 @@ export default function IssueDetails(props) {
                     >
                         <FormGroup>
                             {/* <ControlLabel>Comment</ControlLabel> */}
-                            <FormControl placeholder='Write a comment...' rows={3} name="comment" componentClass="textarea" onChange={(value) => setComment(value)} />
+                            <FormControl placeholder='Write a comment...' rows={3} name="comment" componentClass="textarea" onChange={(value) => setComment(value)} value={comment} />
                         </FormGroup>
                         <ButtonToolbar>
                             <Button disabled={formError.comment !== undefined} appearance="primary" onClick={(event) => addComment(event)}>Submit</Button>

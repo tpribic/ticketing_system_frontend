@@ -18,7 +18,7 @@ export default function RegisterProductForm(props) {
 
     const { StringType } = Schema.Types;
     const issueModel = Schema.Model({
-        serialNumber: StringType().minLength(31, 'Serial number is too short.').maxLength(36, 'Too many characters.').isRequired('Serial number is required.'),
+        serialNumber: StringType().minLength(24, 'Serial number is too short.').maxLength(30, 'Too many characters.').isRequired('Serial number is required.'),
         activationKey: StringType().minLength(10, 'Activation key is too short.').maxLength(13, 'Too many characters.').isRequired('Activation key is required.'),
     });
 
