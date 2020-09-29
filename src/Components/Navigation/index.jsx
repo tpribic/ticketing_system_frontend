@@ -11,6 +11,8 @@ import IssueDetails from "../Issues/IssueDetails";
 import Issues from "../Issues";
 import NewIssueForm from "../Issues/NewIssueForm";
 import { RoleContext } from "../../Context/UserRoleContext";
+import RegisterProductForm from "../Product/RegisterProductForm";
+import CreateNewProductForm from "../Product/CreateNewProductForm";
 
 const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
 
@@ -49,7 +51,6 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
 
     return (
         <>
-        {console.log(role)}
             <Header>
                 <Navbar {...props}>
                     <Navbar.Body>
@@ -90,13 +91,13 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
                                         Issues
                                 </Nav.Item>
                                     <Divider />
-                                    {/* {!isLoading && role.roles.includes("ROLE_ADMIN") ?
+                                    {!isLoading && role.roles.includes("ROLE_ADMIN") ?
                                         <Nav.Item eventKey="4" componentClass={Link} to="/dashboard/admin/add" icon={<Icon icon="user-plus" />}>
                                             Add new Employee
                                             </Nav.Item>
                                         :
                                         null
-                                    } */}
+                                    }
                                 </Nav>
                             </Sidenav.Body>
                         </Sidenav>
@@ -124,14 +125,13 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
                                         Issues
                                 </Nav.Item>
                                     <Divider />
-
-                                    {/* {!isLoading && role.roles.includes("ROLE_EMPLOYEE") ?
+                                    {!isLoading && role.roles.includes("ROLE_ADMIN") ?
                                         <Nav.Item eventKey="4" componentClass={Link} to="/dashboard/admin/add" icon={<Icon icon="user-plus" />}>
                                             Add new Employee
                                             </Nav.Item>
                                         :
                                         null
-                                    } */}
+                                    }
                                 </Nav>
                             </Drawer.Body>
                         </Drawer>
@@ -143,8 +143,8 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
                             {/* function hue(props) { return <p>hej hej issue {props.match.params.slug}</p> } */}
                             <Route exact path="/dashboard" component={function hue() { return (<p>Napraviti prikaz koliko produkata ima i koliko ima issue-a?</p>) }} />
                             <Route exact path="/dashboard/products" component={ProductsContent} />
-                            <Route exact path="/dashboard/product/new" component={function hue() { return (<p>Hue hue new product</p>) }} />
-                            <Route exact path="/dashboard/product/register" component={function hue() { return (<p>Hue hue new product</p>) }} />
+                            <Route exact path="/dashboard/product/new" component={CreateNewProductForm} />
+                            <Route exact path="/dashboard/product/register" component={RegisterProductForm} />
                             <Route exact path="/dashboard/product/:slug/issues" component={ProductIssues} />
                             <Route exact path="/dashboard/issues" component={Issues} />
                             <Route exact path="/dashboard/issue/new" component={NewIssueForm} />

@@ -81,7 +81,7 @@ export default function NewIssueForm() {
                     <TextField name="name" label="Name" type="text" onChange={value => setFormValue({ ...formValue, name: value })} />
                     <FormGroup>
                         <ControlLabel>Description</ControlLabel>
-                        <FormControl placeholder='Describe your issue...' rows={4} name="description" componentClass="textarea" onChange={(value) => setFormValue({ ...formValue, description: value })} />
+                        <FormControl style={{minWidth: 200}} placeholder='Describe your issue...' rows={4} name="description" componentClass="textarea" onChange={(value) => setFormValue({ ...formValue, description: value })} />
                     </FormGroup>
                     <FormGroup>
                         {userProducts ?
