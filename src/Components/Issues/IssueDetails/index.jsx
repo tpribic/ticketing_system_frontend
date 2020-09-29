@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import Axios from 'axios';
 import authHeader from '../../../Services/AuthHeader'
 import { Button, Divider, ButtonToolbar, List, Panel, PanelGroup, Content, Icon, FlexboxGrid, Loader, Form, Schema, FormGroup, ControlLabel, FormControl } from 'rsuite';
-import priorityEnum from '../../ProductIssues/priorityEnum';
+import priorityEnum from '../../Product/ProductIssues/priorityEnum';
 
 const styleCenter = {
     display: 'flex',

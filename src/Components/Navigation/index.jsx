@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Navbar, Nav, Dropdown, Icon, Container, Sidenav, IconButton, Drawer, ButtonToolbar, Button, Sidebar, Header, Content, Divider } from 'rsuite';
 import AuthService from '../../Services/AuthService';
 import { Link, Redirect, Route, Switch, useHistory } from "react-router-dom";
 import useWindowDimensions from '../../Hooks/windowDimensionHook';
 import jwt_decode from 'jwt-decode';
-import ProductsContent from '../ProductsContent'
+import ProductsContent from '../Product/ProductsContent'
 import AddUserForm from "../AddUserForm";
-import ProductIssues from "../ProductIssues"
+import ProductIssues from "../Product/ProductIssues"
 import IssueDetails from "../Issues/IssueDetails";
 import Issues from "../Issues";
 import NewIssueForm from "../Issues/NewIssueForm";
+import { RoleContext } from "../../Context/UserRoleContext";
 
 const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
 
-    const [showEmployeeActions, setShowEmployeeActions] = useState(false);
-    const [showAdminActions, setShowAdminActions] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [currentUser, setCurrentUser] = useState(undefined);
     const [username, setUsername] = useState(undefined);
     const [toggleSideNav, setToggleSideNav] = useState(false);
+    const role = useContext(RoleContext);
 
     const history = useHistory();
     const { width } = useWindowDimensions();
@@ -25,10 +26,11 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
     useEffect(() => {
         const user = AuthService.getCurrentUser();
         if (user) {
+            setIsLoading(true);
             const decodedUser = jwt_decode(user.token);
             setCurrentUser(user);
-            setShowEmployeeActions(decodedUser.roles.includes("ROLE_EMPLOYEE"));
-            setShowAdminActions(decodedUser.roles.includes("ROLE_ADMIN"));
+            role.setRoles(decodedUser.roles);
+            setIsLoading(false);
         }
     }, []);
 
@@ -47,6 +49,7 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
 
     return (
         <>
+        {console.log(role)}
             <Header>
                 <Navbar {...props}>
                     <Navbar.Body>
@@ -87,13 +90,13 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
                                         Issues
                                 </Nav.Item>
                                     <Divider />
-                                    {showAdminActions ?
+                                    {/* {!isLoading && role.roles.includes("ROLE_ADMIN") ?
                                         <Nav.Item eventKey="4" componentClass={Link} to="/dashboard/admin/add" icon={<Icon icon="user-plus" />}>
                                             Add new Employee
                                             </Nav.Item>
                                         :
                                         null
-                                    }
+                                    } */}
                                 </Nav>
                             </Sidenav.Body>
                         </Sidenav>
@@ -122,13 +125,13 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
                                 </Nav.Item>
                                     <Divider />
 
-                                    {showAdminActions ?
+                                    {/* {!isLoading && role.roles.includes("ROLE_EMPLOYEE") ?
                                         <Nav.Item eventKey="4" componentClass={Link} to="/dashboard/admin/add" icon={<Icon icon="user-plus" />}>
                                             Add new Employee
                                             </Nav.Item>
                                         :
                                         null
-                                    }
+                                    } */}
                                 </Nav>
                             </Drawer.Body>
                         </Drawer>
@@ -137,8 +140,8 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
                 <Container>
                     <Content style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
                         <Switch>
-                        {/* function hue(props) { return <p>hej hej issue {props.match.params.slug}</p> } */}
-                            <Route exact path="/dashboard" component={function hue() { return (<p>Hue hue dashboard</p>) }} />
+                            {/* function hue(props) { return <p>hej hej issue {props.match.params.slug}</p> } */}
+                            <Route exact path="/dashboard" component={function hue() { return (<p>Napraviti prikaz koliko produkata ima i koliko ima issue-a?</p>) }} />
                             <Route exact path="/dashboard/products" component={ProductsContent} />
                             <Route exact path="/dashboard/product/new" component={function hue() { return (<p>Hue hue new product</p>) }} />
                             <Route exact path="/dashboard/product/register" component={function hue() { return (<p>Hue hue new product</p>) }} />

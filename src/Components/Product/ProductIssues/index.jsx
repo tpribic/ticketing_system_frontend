@@ -1,9 +1,10 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Button, Icon, Loader } from 'rsuite';
-import authHeader from '../../Services/AuthHeader'
+import authHeader from '../../../Services/AuthHeader'
 import { Table } from 'rsuite'
 import { useHistory } from 'react-router-dom'
+import priorityEnum from './priorityEnum'
 
 const { Column, HeaderCell, Cell, Pagination } = Table;
 
@@ -32,51 +33,50 @@ const dataStyle = {
     fontWeight: 500
 };
 
-export default function ProductsContent(props) {
-    const history = useHistory();
-    const [products, setProducts] = useState(undefined);
 
-    const getProducts = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + 'api/user/products', { headers: authHeader() }); setProducts(response.data.products); }
+export default function ProductIssues(props) {
+
+    const history = useHistory();
+    const [productIssues, setProductIssues] = useState(undefined);
+
+    const getProductIssues = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + `api/user/product/${props.match.params.slug}/issues`, { headers: authHeader() }); setProductIssues(response.data); }
 
     useEffect(() => {
-        getProducts();
+        getProductIssues();
     }, [])
 
     return (
         <div style={{ width: '100%' }}>
             <Button
-                onClick={() => history.push('/dashboard/product/register')}
                 appearance="primary"
                 style={{ margin: 20 }}>
-                Register product <Icon icon="plus-square" style={{ marginLeft: 3 }} />
+                Add new issue <Icon icon="plus-square" style={{ marginLeft: 3 }} />
             </Button>
-            <Button
-                onClick={() => history.push('/dashboard/product/new')}
-                appearance="primary"
-                style={{ margin: 20 }}>
-                Add new product <Icon icon="plus-square" style={{ marginLeft: 3 }} />
-            </Button>
-            {products ?
+            {productIssues ?
                 <Table
                     autoHeight={true}
-                    data={products}
+                    data={productIssues}
                     onRowClick={data => {
                         console.log(data);
                     }}
                 >
-                    <Column width={70} align="center" fixed>
+                    <Column width={70} fixed>
                         <HeaderCell>Id</HeaderCell>
                         <Cell dataKey="id" />
                     </Column>
+                    <Column width={70} align="center" fixed>
+                        <HeaderCell>Priority</HeaderCell>
+                        <Cell>
+                            {(rowData, rowIndex) => {
+                                return <p>{priorityEnum[rowData.priority]}</p>;
+                            }}
+                        </Cell>
+                    </Column>
                     <Column width={200} resizable>
-                        <HeaderCell>Product Name</HeaderCell>
+                        <HeaderCell>Issue Name</HeaderCell>
                         <Cell dataKey="name" />
                     </Column>
 
-                    <Column width={200} resizable>
-                        <HeaderCell>Serial Number</HeaderCell>
-                        <Cell dataKey="serialNumber" />
-                    </Column>
                     <Column width={200} resizable>
                         <HeaderCell>Name</HeaderCell>
                         <Cell>
@@ -86,16 +86,19 @@ export default function ProductsContent(props) {
                         </Cell>
                     </Column>
                     <Column width={200}>
-                        <HeaderCell>Owner Surname</HeaderCell>
+                        <HeaderCell>Assigned to</HeaderCell>
                         <Cell>
                             {(rowData, rowIndex) => {
-                                return <p>{rowData.user.surname}</p>;
+                                return rowData.employee ?
+                                    <p>{rowData.user.username}</p>
+                                    :
+                                    "Unasigned"
                             }}
                         </Cell>
                     </Column>
 
                     <Column width={300}>
-                        <HeaderCell>Email</HeaderCell>
+                        <HeaderCell>Opened By</HeaderCell>
                         <Cell>
                             {(rowData, rowIndex) => {
                                 return <p>{rowData.user.username}</p>;
@@ -107,17 +110,12 @@ export default function ProductsContent(props) {
 
                         <Cell>
                             {rowData => {
-                                function showIssues() {
-                                    history.push(`/dashboard/product/${rowData.id}/issues`);
+                                function showIssue() {
+                                    history.push(`/dashboard/issue/${rowData.id}`);
                                 }
-                                // function createNewIssue() {
-                                //     history.push(`/dashboard/product/${rowData.id}/new`)
-                                // }
                                 return (
                                     <span>
-                                        <a onClick={showIssues}> Open issues </a>
-                                        {/* |{' '}
-                                        <a onClick={createNewIssue}> New Issue </a> */}
+                                        <a onClick={showIssue}> Details </a>
                                     </span>
                                 );
                             }}

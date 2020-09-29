@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import AuthLayout from "./Components/Layouts/AuthLayout/index";
 import DashboardLayout from "./Components/Layouts/DashboardLayout/index";
-import Login from "./Components/LoginForm/index";
-import Register from "./Components/RegisterForm/index";
 import AuthService from "./Services/AuthService";
 
 const MainRoutes = () => {

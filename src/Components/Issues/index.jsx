@@ -3,18 +3,29 @@ import { useHistory } from 'react-router-dom'
 import Axios from 'axios'
 import { Button, Icon, Loader, Table } from 'rsuite';
 import authHeader from '../../Services/AuthHeader'
+import { useContext } from 'react';
+import { RoleContext } from '../../Context/UserRoleContext';
 
 const { Column, HeaderCell, Cell, Pagination } = Table;
 
 export default function Issues(props) {
     const history = useHistory();
-    const [products, setProducts] = useState(undefined);
+    const [issues, setIssues] = useState(undefined);
+    const role = useContext(RoleContext);
 
-    const getProducts = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + 'api/employee/issues', { headers: authHeader() }); setProducts(response.data); }
+    const getAllIssues = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + 'api/employee/issues', { headers: authHeader() }); setIssues(response.data); }
+    const getUserIssues = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + 'api/user/issues', { headers: authHeader() }); setIssues(response.data); }
 
     useEffect(() => {
-        getProducts();
-    }, [])
+        if (role.roles !== null) {
+            role.roles.includes("ROLE_ADMIN") || role.roles.includes("ROLE_EMPLOYEE")
+                ?
+                getAllIssues()
+                :
+                getUserIssues()
+        }
+
+    }, [role.roles])
 
     return (
         <div style={{ width: '100%' }}>
@@ -24,10 +35,10 @@ export default function Issues(props) {
                 style={{ margin: 20 }}>
                 Open new issue <Icon icon="plus-square" style={{ marginLeft: 3 }} />
             </Button>
-            {products ?
+            {issues ?
                 <Table
                     autoHeight={true}
-                    data={products}
+                    data={issues}
                     onRowClick={data => {
                         console.log(data);
                     }}
