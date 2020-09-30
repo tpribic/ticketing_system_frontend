@@ -5,6 +5,7 @@ import authHeader from '../../../Services/AuthHeader'
 import { Table } from 'rsuite'
 import { useHistory } from 'react-router-dom'
 import priorityEnum from './priorityEnum'
+import useWindowDimensions from '../../../Hooks/windowDimensionHook';
 
 const { Column, HeaderCell, Cell, Pagination } = Table;
 
@@ -38,7 +39,7 @@ export default function ProductIssues(props) {
 
     const history = useHistory();
     const [productIssues, setProductIssues] = useState(undefined);
-
+    const { width } = useWindowDimensions()
     const getProductIssues = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + `api/user/product/${props.match.params.slug}/issues`, { headers: authHeader() }); setProductIssues(response.data); }
 
     useEffect(() => {
@@ -54,7 +55,7 @@ export default function ProductIssues(props) {
             </Button>
             {productIssues ?
                 <Table
-                    autoHeight={true}
+                    height={width > 768 ? 800 : 500}
                     data={productIssues}
                     onRowClick={data => {
                         console.log(data);

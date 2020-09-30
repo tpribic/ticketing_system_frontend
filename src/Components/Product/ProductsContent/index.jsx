@@ -4,6 +4,7 @@ import { Button, Icon, Loader } from 'rsuite';
 import authHeader from '../../../Services/AuthHeader'
 import { Table } from 'rsuite'
 import { useHistory } from 'react-router-dom'
+import useWindowDimensions from '../../../Hooks/windowDimensionHook';
 
 const { Column, HeaderCell, Cell, Pagination } = Table;
 
@@ -35,6 +36,7 @@ const dataStyle = {
 export default function ProductsContent(props) {
     const history = useHistory();
     const [products, setProducts] = useState(undefined);
+    const { width } = useWindowDimensions();
 
     const getProducts = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + 'api/user/products', { headers: authHeader() }); setProducts(response.data.products); }
 
@@ -58,7 +60,7 @@ export default function ProductsContent(props) {
             </Button>
             {products ?
                 <Table
-                    autoHeight={true}
+                    height={width > 768 ? 800 : 500}
                     data={products}
                     onRowClick={data => {
                         console.log(data);
@@ -110,14 +112,10 @@ export default function ProductsContent(props) {
                                 function showIssues() {
                                     history.push(`/dashboard/product/${rowData.id}/issues`);
                                 }
-                                // function createNewIssue() {
-                                //     history.push(`/dashboard/product/${rowData.id}/new`)
-                                // }
                                 return (
                                     <span>
                                         <a onClick={showIssues}> Open issues </a>
-                                        {/* |{' '}
-                                        <a onClick={createNewIssue}> New Issue </a> */}
+                                      
                                     </span>
                                 );
                             }}

@@ -5,6 +5,7 @@ import { Button, Icon, Loader, Table } from 'rsuite';
 import authHeader from '../../Services/AuthHeader'
 import { useContext } from 'react';
 import { RoleContext } from '../../Context/UserRoleContext';
+import useWindowDimensions from '../../Hooks/windowDimensionHook';
 
 const { Column, HeaderCell, Cell, Pagination } = Table;
 
@@ -12,6 +13,7 @@ export default function Issues(props) {
     const history = useHistory();
     const [issues, setIssues] = useState(undefined);
     const role = useContext(RoleContext);
+    const {width} = useWindowDimensions()
 
     const getAllIssues = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + 'api/employee/issues', { headers: authHeader() }); setIssues(response.data); }
     const getUserIssues = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + 'api/user/issues', { headers: authHeader() }); setIssues(response.data); }
@@ -37,7 +39,7 @@ export default function Issues(props) {
             </Button>
             {issues ?
                 <Table
-                    autoHeight={true}
+                    height={width > 768 ? 800 : 500}
                     data={issues}
                     onRowClick={data => {
                         console.log(data);

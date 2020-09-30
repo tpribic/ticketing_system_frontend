@@ -13,6 +13,7 @@ import NewIssueForm from "../Issues/NewIssueForm";
 import { RoleContext } from "../../Context/UserRoleContext";
 import RegisterProductForm from "../Product/RegisterProductForm";
 import CreateNewProductForm from "../Product/CreateNewProductForm";
+import DashboardContent from "../DashboardContent";
 
 const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
 
@@ -141,7 +142,7 @@ const NavigationInstance = ({ onSelect, activeKey, ...props }) => {
                     <Content style={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
                         <Switch>
                             {/* function hue(props) { return <p>hej hej issue {props.match.params.slug}</p> } */}
-                            <Route exact path="/dashboard" component={function hue() { return (<p>Napraviti prikaz koliko produkata ima i koliko ima issue-a?</p>) }} />
+                            <Route exact path="/dashboard" component={DashboardContent} />
                             <Route exact path="/dashboard/products" component={ProductsContent} />
                             <Route exact path="/dashboard/product/new" component={CreateNewProductForm} />
                             <Route exact path="/dashboard/product/register" component={RegisterProductForm} />
