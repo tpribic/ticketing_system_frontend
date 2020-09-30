@@ -1,10 +1,11 @@
 import Axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Icon, Loader } from 'rsuite';
 import authHeader from '../../../Services/AuthHeader'
 import { Table } from 'rsuite'
 import { useHistory } from 'react-router-dom'
 import useWindowDimensions from '../../../Hooks/windowDimensionHook';
+import { RoleContext } from '../../../Context/UserRoleContext';
 
 const { Column, HeaderCell, Cell, Pagination } = Table;
 
@@ -36,6 +37,7 @@ const dataStyle = {
 export default function ProductsContent(props) {
     const history = useHistory();
     const [products, setProducts] = useState(undefined);
+    const role = useContext(RoleContext);
     const { width } = useWindowDimensions();
 
     const getProducts = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + 'api/user/products', { headers: authHeader() }); setProducts(response.data.products); }
@@ -46,18 +48,21 @@ export default function ProductsContent(props) {
 
     return (
         <div style={{ width: '100%' }}>
-            <Button
-                onClick={() => history.push('/dashboard/product/register')}
-                appearance="primary"
-                style={{ margin: 20 }}>
-                Register product <Icon icon="plus-square" style={{ marginLeft: 3 }} />
-            </Button>
-            <Button
-                onClick={() => history.push('/dashboard/product/new')}
-                appearance="primary"
-                style={{ margin: 20 }}>
-                Add new product <Icon icon="plus-square" style={{ marginLeft: 3 }} />
-            </Button>
+            {role.roles !== null && role.roles.includes("ROLE_ADMIN") ?
+                <Button
+                    onClick={() => history.push('/dashboard/product/new')}
+                    appearance="primary"
+                    style={{ margin: 20 }}>
+                    Add new product <Icon icon="plus-square" style={{ marginLeft: 3 }} />
+                </Button>
+                :
+                <Button
+                    onClick={() => history.push('/dashboard/product/register')}
+                    appearance="primary"
+                    style={{ margin: 20 }}>
+                    Register product <Icon icon="plus-square" style={{ marginLeft: 3 }} />
+                </Button>
+            }
             {products ?
                 <Table
                     height={width > 768 ? 800 : 500}
@@ -115,7 +120,7 @@ export default function ProductsContent(props) {
                                 return (
                                     <span>
                                         <a onClick={showIssues}> Open issues </a>
-                                      
+
                                     </span>
                                 );
                             }}

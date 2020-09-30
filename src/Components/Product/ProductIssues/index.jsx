@@ -49,6 +49,7 @@ export default function ProductIssues(props) {
     return (
         <div style={{ width: '100%' }}>
             <Button
+                onClick={() => { history.push('/dashboard/issue/new') }}
                 appearance="primary"
                 style={{ margin: 20 }}>
                 Add new issue <Icon icon="plus-square" style={{ marginLeft: 3 }} />

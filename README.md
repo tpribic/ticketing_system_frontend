@@ -1,3 +1,9 @@
+## Apart from default create-react-app documentation
+
+1. You should populate .env file with required URL-s since those endpoinds are used for fetching data from API
+2. Run `yarn install`
+3. Run `yarn start`
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
