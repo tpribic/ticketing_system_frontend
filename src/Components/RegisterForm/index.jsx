@@ -85,7 +85,7 @@ const Register = (props) => {
                     </ButtonToolbar>
                 </FormGroup>
                 <FormGroup>
-                    {message}
+                    <p style={{ color: 'red' }}>{message}</p>
                 </FormGroup>
                 <Link to="/login">I have already registered</Link>
             </Form >

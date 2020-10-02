@@ -41,10 +41,18 @@ export default function ProductsContent(props) {
     const { width } = useWindowDimensions();
 
     const getProducts = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + 'api/user/products', { headers: authHeader() }); setProducts(response.data.products); }
+    const getAllProducts = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + 'api/employee/products', { headers: authHeader() }); setProducts(response.data); }
 
     useEffect(() => {
-        getProducts();
-    }, [])
+        if (role.roles !== null) {
+            if (role.roles.includes("ROLE_ADMIN") || role.roles.includes("ROLE_EMPLOYEE")) {
+                getAllProducts();
+            } else {
+                getProducts();
+            }
+        }
+
+    }, [role.roles])
 
     return (
         <div style={{ width: '100%' }}>
@@ -88,7 +96,7 @@ export default function ProductsContent(props) {
                         <HeaderCell>Name</HeaderCell>
                         <Cell>
                             {(rowData, rowIndex) => {
-                                return <p>{rowData.user.name}</p>;
+                                return <p>{rowData.user === null ? "" : rowData.user.name}</p>;
                             }}
                         </Cell>
                     </Column>
@@ -96,22 +104,20 @@ export default function ProductsContent(props) {
                         <HeaderCell>Owner Surname</HeaderCell>
                         <Cell>
                             {(rowData, rowIndex) => {
-                                return <p>{rowData.user.surname}</p>;
+                                return <p>{rowData.user === null ? "" : rowData.user.surname}</p>;
                             }}
                         </Cell>
                     </Column>
-
                     <Column width={300}>
                         <HeaderCell>Email</HeaderCell>
                         <Cell>
                             {(rowData, rowIndex) => {
-                                return <p>{rowData.user.username}</p>;
+                                return <p>{rowData.user === null ? "" : rowData.user.username}</p>;
                             }}
                         </Cell>
                     </Column>
                     <Column width={150} fixed="right">
                         <HeaderCell>Action</HeaderCell>
-
                         <Cell>
                             {rowData => {
                                 function showIssues() {
@@ -130,6 +136,7 @@ export default function ProductsContent(props) {
                 :
                 <Loader />
             }
+            {console.log(products)}
         </div>
     )
 }

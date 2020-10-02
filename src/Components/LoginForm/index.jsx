@@ -62,7 +62,7 @@ const Login = (props) => {
                     </ButtonToolbar>
                 </FormGroup>
                 <FormGroup>
-                    {message}
+                    <p style={{color: 'red'}}>{message}</p>
                 </FormGroup>
                 <p>Don't have an account?</p>
                 <Link to="/register">Register here</Link>
