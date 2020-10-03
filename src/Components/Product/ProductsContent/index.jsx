@@ -40,16 +40,12 @@ export default function ProductsContent(props) {
     const role = useContext(RoleContext);
     const { width } = useWindowDimensions();
 
-    const getProducts = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + 'api/user/products', { headers: authHeader() }); setProducts(response.data.products); }
-    const getAllProducts = async () => { const response = await Axios.get(process.env.REACT_APP_API_URL + 'api/employee/products', { headers: authHeader() }); setProducts(response.data); }
+    const getProducts = async (role) => { const response = await Axios.get(process.env.REACT_APP_API_URL + `api/${role}/products`, { headers: authHeader() }); setProducts(response.data); }
 
     useEffect(() => {
         if (role.roles !== null) {
-            if (role.roles.includes("ROLE_ADMIN") || role.roles.includes("ROLE_EMPLOYEE")) {
-                getAllProducts();
-            } else {
-                getProducts();
-            }
+            let currentRole = role.roles.includes("ROLE_ADMIN") || role.roles.includes("ROLE_EMPLOYEE") ? 'employee' : 'user';
+            getProducts(currentRole)
         }
 
     }, [role.roles])

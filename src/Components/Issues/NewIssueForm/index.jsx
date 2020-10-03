@@ -1,7 +1,9 @@
 import Axios from 'axios';
 import React, { useState, useRef, useEffect } from 'react'
+import { useContext } from 'react';
 import { useHistory, Link } from 'react-router-dom'
 import { Container, Form, Button, ButtonToolbar, Schema, FormGroup, FormControl, ControlLabel, InputPicker, Panel, Loader } from 'rsuite'
+import { RoleContext } from '../../../Context/UserRoleContext';
 import useWindowDimensions from '../../../Hooks/windowDimensionHook';
 import authHeader from '../../../Services/AuthHeader';
 import { TextField } from '../../RegisterForm/TextField';
@@ -15,10 +17,14 @@ export default function NewIssueForm() {
     const [message, setMessage] = useState(null);
     const [selectedKey, setSelectedKey] = useState(null);
     const [userProducts, setUserProducts] = useState(null);
+    const role = useContext(RoleContext);
 
     useEffect(() => {
-        getUserProducts()
-    }, [])
+        if (role.roles !== null) {
+            let currentRole = role.roles.includes("ROLE_ADMIN") || role.roles.includes("ROLE_EMPLOYEE") ? 'employee' : 'user';
+            getProducts(currentRole)
+        }
+    }, [role.roles])
 
     const { StringType, NumberType } = Schema.Types;
     const issueModel = Schema.Model({
@@ -26,21 +32,28 @@ export default function NewIssueForm() {
         description: StringType().minLength(10, 'Description too short.').maxLength(255, 'Too many characters.').isRequired('Description is required.'),
     });
 
-    const getUserProducts = async () => {
-        const response = await Axios.get(process.env.REACT_APP_API_URL + 'api/user/products', { headers: authHeader() })
+    const getProducts = async (role) => {
+        if (role.roles === null) {
+            return;
+        }
+        const response = await Axios.get(process.env.REACT_APP_API_URL + `api/${role}/products`, { headers: authHeader() })
+        let userProducts = createPickerData(response);
+        setUserProducts(userProducts)
+    }
+
+    const createPickerData = (response) => {
         let userProducts = [];
-        response.data.products.forEach(product => {
+        response.data.forEach(product => {
             userProducts.push(
                 {
                     label: product.name,
                     value: product.serialNumber,
                     role: product.name,
                 }
-            )
+            );
         });
-        setUserProducts(userProducts)
+        return userProducts;
     }
-
     const createIssue = (event) => {
         if (!form.current.check()) {
             return;
@@ -81,11 +94,12 @@ export default function NewIssueForm() {
                     <TextField name="name" label="Name" type="text" onChange={value => setFormValue({ ...formValue, name: value })} />
                     <FormGroup>
                         <ControlLabel>Description</ControlLabel>
-                        <FormControl style={{minWidth: 200}} placeholder='Describe your issue...' rows={4} name="description" componentClass="textarea" onChange={(value) => setFormValue({ ...formValue, description: value })} />
+                        <FormControl style={{ minWidth: 200 }} placeholder='Describe your issue...' rows={4} name="description" componentClass="textarea" onChange={(value) => setFormValue({ ...formValue, description: value })} />
                     </FormGroup>
                     <FormGroup>
                         {userProducts ?
                             <>
+                                <ControlLabel>Select Product</ControlLabel>
                                 <InputPicker name="serialNumber" cleanable={false} onSelect={(value) => setSelectedKey(value)} onChange={value => setFormValue({ ...formValue, serialNumber: value })} data={userProducts} />
                                 {selectedKey ?
                                     <div style={{ padding: '10px 0' }}>
@@ -110,6 +124,7 @@ export default function NewIssueForm() {
                     </FormGroup>
                 </Form >
             </Panel>
+            {console.log(role.roles)}
         </Container>
     )
 }

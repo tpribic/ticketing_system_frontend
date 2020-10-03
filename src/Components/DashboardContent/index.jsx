@@ -34,7 +34,7 @@ export default function DashboardContent(props) {
         const products = await Axios.get(process.env.REACT_APP_API_URL + `api/user/products`, { headers: authHeader() });
         setIssues(issues.data.length);
         setSolvedIssues(solvedIssues.data.length);
-        setProducts(products.data.products.length);
+        setProducts(products.data.length);
         setIsLoading(false);
     }
 
@@ -104,7 +104,18 @@ export default function DashboardContent(props) {
                                     <>
                                         <FlexboxGrid style={{ justifyContent: 'center', height: 'inherit' }}>
                                             <FlexboxGrid.Item style={{ display: 'flex', flexDirection: 'column', height: 300, justifyContent: 'center', alignItems: 'center' }}>
-
+                                                {products === 0 ?
+                                                    null
+                                                    :
+                                                    <>
+                                                        <h5>
+                                                            Product sum
+                                                        </h5>
+                                                        <h5>
+                                                            {products}
+                                                        </h5>
+                                                    </>
+                                                }
                                             </FlexboxGrid.Item>
                                         </FlexboxGrid>
                                         <Button appearance="primary">Register new product</Button>
